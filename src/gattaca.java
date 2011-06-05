@@ -1,12 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class gattaca {
-
-	private final int width = 80;
-	private int predictions[][];
-	private String dnaSequence;
+	
+	private LinkedList<Interval> predictions = new LinkedList<Interval>();
 	
 	/**
 	 * @param args
@@ -30,38 +29,31 @@ public class gattaca {
 		try {
 			File file = new File(fileName);
 			Scanner scanner = new Scanner(file);
-			int i = 0;
-			int lines = 0;
-			int length = 0;
-			int predictionLineCounter = 0;
-			int predictionColCounter = 0;
-			StringBuilder sb = new StringBuilder();
 			while (scanner.hasNext()) {
-				if (i == 0) {
-					// First line = length of DNA sequence
-					length = scanner.nextInt();
-					if (length <= width)
-						lines = 0;
-					else if (length % width == 0)
-						lines = length / width;
-					else
-						lines = (length / width) + 1;
-				} else if (i <= lines) { 
-					sb.append(scanner.next());
-				} else if (i == (lines + 1)) {
-					predictions = new int[scanner.nextInt()][3];
-				} else {
-					int z = scanner.nextInt();
-					predictions[predictionLineCounter][predictionColCounter] = z;
-					predictionColCounter++;
-					if (predictionColCounter == 3) {
-						predictionColCounter = 0;
-						predictionLineCounter++;
+				String line = scanner.nextLine();
+				if (line.matches("\\d+\\s+\\d+\\s+\\d+\\s*")) {
+					// We have a prediction
+					Scanner s2 = new Scanner(line);
+					int col = 0;
+					int start = 0;
+					int end = 0;
+					int score = 0;
+					while (s2.hasNext()) {
+						if (col == 0)
+							start = s2.nextInt();
+						else if (col == 1)
+							end = s2.nextInt();
+						else if (col == 2)
+							score = s2.nextInt();
+						col++;
+						if (col == 3) {
+							col = 0;
+							Interval i = new Interval(start, end, score);
+							predictions.add(i);
+						}
 					}
 				}
-				i++;
 			}
-			dnaSequence = sb.toString();
 		} catch (FileNotFoundException e) {
 			System.out.println("Could not find file");
 		}
@@ -74,5 +66,18 @@ public class gattaca {
 	 */
 	public int getBestDNAScore() {
 		return 0;
+	}
+	
+	private class Interval {
+		
+		public int start;
+		public int end;
+		public int score;
+		
+		public Interval(int start, int end, int score) {
+			this.start = start;
+			this.end = end;
+			this.score = score;
+		}
 	}
 }
