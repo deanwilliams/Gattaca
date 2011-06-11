@@ -1,4 +1,4 @@
 Facebook Engineering Puzzle - Gattaca
 ------------------------------------------
 
-Solution in progress for Facebook Engineering puzzle, Gattaca
+Solution for Facebook Engineering puzzle, Gattaca - with two test cases.
