@@ -7,9 +7,14 @@ import org.junit.Test;
 public class testGattaca {
 
 	@Test
-	public void testGattacaExample() throws FileNotFoundException {
-		gattaca g = new gattaca("./tests/example.in");
+	public void testGattaca100() throws FileNotFoundException {
+		gattaca g = new gattaca("./tests/100.in");
 		assertEquals(100, g.getBestDNAScore());
 	}
 	
+	@Test
+	public void testGattaca50() throws FileNotFoundException {
+		gattaca g = new gattaca("./tests/50.in");
+		assertEquals(50, g.getBestDNAScore());
+	}
 }
